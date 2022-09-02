@@ -57,3 +57,5 @@ def main(page: Page):
 
 
 flet.app(target=main)
+
+# TODO añadir botones para avanzar o retorceder en la lista de títulos encontrados
