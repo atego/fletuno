@@ -1,8 +1,0 @@
-altgraph==0.17.2
-beartype==0.10.4
-flet==0.1.42
-pyinstaller==5.2
-pyinstaller-hooks-contrib==2022.8
-repath==0.9.0
-six==1.16.0
-websocket-client==1.3.3
