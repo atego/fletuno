@@ -1,5 +1,5 @@
 import flet
-from flet import Page, UserControl, Container, Column, TextField, Text, colors, icons
+from flet import Page, UserControl, Image, Container, Column, TextField, Text, colors
 import requests
 
 url_1: str = 'https://api.themoviedb.org/3/search/multi?api_key=95416f08d5a3605b98c196f97deb89dc&language=es-ES' \
@@ -16,18 +16,13 @@ class Inicio(UserControl):
         # TEXTO RESULTADOS -------------------------------------------------------------------------
         self.total_resultados = Text(value='', size=16, color=colors.BLUE)
         # IMAGEN DE PORTADA ------------------------------------------------------------------------
-        self.portada = Container(
-            width=300,
-            height=400,
-            image_src='',
-            image_fit='contain',
-            border_radius=7
-        )
+        self.portada = Image(src='/sin-imagen.jpg', border_radius=7, fit='contain', width=300)
+        self.contenedor_portada = Container(content=self.portada)
         # CONTENEDOR --------------------------------------------------------------------------------
         self.contenedor = Container(
             content=Column(
-                controls=[self.titulo_input, self.total_resultados, self.portada],
-                height=500,
+                controls=[self.titulo_input, self.total_resultados, self.contenedor_portada],
+                height=550,
                 spacing=10,
                 horizontal_alignment='center'
             )
@@ -42,8 +37,9 @@ class Inicio(UserControl):
             try:
                 respuesta = requests.get(url=url).json()
                 self.lista_resultados = respuesta['results']
+                print(self.lista_resultados[0])
                 self.total_resultados.value = f'Títulos encontrados: {len(self.lista_resultados)}'
-                self.portada.image_src = f'{url_imagen}{self.lista_resultados[0]["poster_path"]}'
+                self.portada.src = f'{url_imagen}{self.lista_resultados[0]["poster_path"]}'
                 self.contenedor.update()
             except:
                 print('error')
@@ -51,11 +47,14 @@ class Inicio(UserControl):
 
 def main(page: Page):
     page.title = 'Películas'
+    page.window_width = 400
+    page.window_height = 800
     page.window_center()
     page.update()
     page.add(Inicio())
 
 
-flet.app(target=main)
+
+flet.app(target=main, assets_dir='assets')
 
 # TODO añadir botones para avanzar o retorceder en la lista de títulos encontrados
